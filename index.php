@@ -1,7 +1,14 @@
 <?php
+session_start();
 
-require_once realpath( dirname( __FILE__ ) ) . '/parent_dao.php';
-require_once realpath( dirname( __FILE__ ) ) . '/sms_service.php';
+if(!isset($_SESSION['user_id']))
+{
+    header('Location: login.php');
+    die;
+}
+
+require_once realpath( dirname( __FILE__ ) ) . '/classes/parent_dao.php';
+require_once realpath( dirname( __FILE__ ) ) . '/classes/sms_service.php';
 require_once realpath( dirname( __FILE__ ) ) . '/config.php';
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
@@ -54,41 +61,14 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
   <title>RC Parent Information System</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-  <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <link rel="shortcut icon" href="favicon.ico" />
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/custom.css">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery.validate.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/custom.js"></script>
 </head>
-<style type="text/css">
-body {
-  background-color: #F1F1F1;
-}
-.form-group {
-  width: 50%;
-}
-.error {
-  margin-top: 2px;
-  color: red;
-}
-#logo {
-  font-family: Georgia,Times,"Times New Roman",serif;
-  text-align: left;
-  text-transform: uppercase;
-}
-#logo, #tagline {
-  color: #0c5390;
-  font-size: 23px;
-}
-#crest {
-  height: 75px;
-  width: 53px;
-  background-image: url('crest.png');
-  background-size: 53px 75px;
-  background-repeat: no-repeat;
-  float: left;
-  margin-right: 10px;
-}
-</style>
 <body>
   <div class="container">
     <div id="header">
@@ -114,7 +94,7 @@ body {
           </div>
         </div>
         <?php } ?>
-        <form id="form"action="index.php" method="post" role="form" >
+        <form id="form" action="index.php" method="post" role="form" >
           <div class="form-group">
             <label for="send_to">Send to:</label>
             <select id="send_to" name="send_to" class="form-control">
@@ -134,63 +114,8 @@ body {
         </form>
       </div>
     </div>
+    <a href="login.php">Log Out</a>
   </div>
 
 </body>
-<script type="text/javascript">
-$( document ).ready(function() {
-  $('#send').on('click', function(){
-    if(isValidForm()){
-      $('#form').submit();
-    }
-  });
-
-  if($('#send_to').val() == 'custom'){
-    $('#custom_no').show();
-  } else {
-    $('#custom_no').hide();
-  }
-
-  $('#send_to').on('change', function(){
-    if($('#send_to').val() == 'custom'){
-      $('#custom_no').show();
-    } else {
-      $('#custom_no').val("");
-      $('#custom_no').hide();
-    }
-  });
-
-  $.validator.addMethod("regex", function(value, element, regexp) {          
-    var re = new RegExp(regexp);
-    return this.optional(element) || re.test(value);
-  }, "Please enter mobile numbers in a valid format");
-
-});
-
-function isValidForm(){
-  $("#form").validate({
-    rules: {
-      message: {
-        required: true,
-        maxlength: 255
-      },
-      custom_no: {
-        required: true,
-        regex: '^[7][0-9]{8}(,[7][0-9]{8})*$'
-      }
-    },
-    messages: {
-      message: {
-        required: "Message body is required",
-        minlength: "Message should be less than 255 charators"
-      },
-      custom_no: {
-        required: "Mobile Number(s) are required",
-        regex: "Please enter mobile numbers in a valid format"
-      }
-    }
-  });
-  return true;
-}
-</script>
 </html>

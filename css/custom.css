@@ -1,0 +1,31 @@
+body {
+  background-color: #F1F1F1;
+}
+.form-group {
+  width: 50%;
+}
+.error {
+  margin-top: 2px;
+  color: red;
+}
+#logo {
+  font-family: Georgia,Times,"Times New Roman",serif;
+  text-align: left;
+  text-transform: uppercase;
+}
+#logo, #tagline {
+  color: #0c5390;
+  font-size: 23px;
+}
+#crest {
+  height: 75px;
+  width: 53px;
+  background-image: url('../images/crest.png');
+  background-size: 53px 75px;
+  background-repeat: no-repeat;
+  float: left;
+  margin-right: 10px;
+}
+.login-panel {
+  margin-top: 50px;
+}
